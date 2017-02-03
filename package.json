@@ -1,0 +1,31 @@
+{
+  "name": "receving_sms",
+  "version": "0.0.1",
+  "description": "A sample Node.js app using Express 4",
+  "engines": {
+    "node": "5.9.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+
+  "dependencies": {
+    "bufferutil": "1.2.1",
+    "express": "4.13.4",
+    "utf-8-validate": "1.2.1",
+    "ws": "1.1.0",
+    "pg": "2.x"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghosteyetech/SMS_Read_Ext.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
+}

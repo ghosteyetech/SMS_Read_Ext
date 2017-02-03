@@ -1,0 +1,8 @@
+{
+  "name": "Node.js SMS Rceiving",
+  "description": "Node.js app using Express 4",
+  "repository": "https://github.com/ghosteyetech/SMS_Read_Ext.git",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node", "express", "static"],
+  "image": "heroku/nodejs"
+}
