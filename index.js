@@ -6,6 +6,7 @@ const express = require('express');
 const SocketServer = require('ws').Server;
 const path = require('path');
 
+
 // var pg = require('pg');
 // pg.defaults.ssl = true;
 //
@@ -20,8 +21,26 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'indexx.html');
 
-const server = express()
-  .use((req, res) => res.sendFile(INDEX) )
+const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
+  .use((req, res) => {   //http://stackoverflow.com/questions/6912584/how-to-get-get-query-string-variables-in-express-js-on-node-js
+    
+    console.log("req :: "+ req.query.q);//extarct query paramters like this url====> http://localhost:3000/search?q=tobi+ferret
+    
+    var msgContent = {sender:"me", msg: req.query.q};
+
+  //console.log(req);
+  //res.json(req.body);
+
+    res.header('Content-type', 'text/html');
+    res.end('<h1>Hello, Secure World!'+req.query.q+'</h1>');  
+    
+    SenddDataToClient(msgContent, "all");
+    
+    //console.log("res:::") ;
+    //console.log(res) ;
+    //res.sendFile(INDEX);
+
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 const wss = new SocketServer({ server });
@@ -37,18 +56,26 @@ function SenddDataToClient(msg, client_ID){
   }
 
   wss.clients.forEach((client) => {
-      //console.log("Client ID ::"+client.clientId);
+      console.log("Client ID ::"+client.clientId);
       try {
-          var json = JSON.parse(msg);
-          console.log("Message :");
-          console.log(json.data);
 
-          if(json.data != 'ping'){
-            if(client.clientId == opponentPlayer){
-                var resData = JSON.stringify({"YourID" : client_ID+"", "opponentPlayer": opponentPlayer+"", "Box": json.data});
-                client.send(resData);
-            }
+          if(msg == "pong"){
+            var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
+            client.send(resData);  
+          }else{
+            var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
+            client.send(resData);
           }
+          
+          //var json = JSON.parse(msg);//JSON.parse is use only when deal with var str = '{"foo": "bar"}'; like string. 
+                                      //If you have object like var chunk={id:"12",data:"123556",details:{"name":"alan","age":"12"}}; no need to parse
+          //console.log("Message :");
+          //console.log(json.data);
+
+          /*if(json.data == 'ping'){
+            var resData = JSON.stringify({"YourID" : client_ID+"", "Box": msg});
+            client.send(resData);
+          }*/
 
       } catch (e) {
           console.log('This doesn\'t look like a valid JSON: ', msg);
@@ -66,8 +93,25 @@ wss.on('connection', (ws) => {
   console.log('Client connected --- ID :'+ws.clientId);
 
   ws.on('message',(msg) =>{
-    console.log("Got msg :::" + msg);
-    SenddDataToClient(msg,ws.clientId);
+
+    try{
+      var data = JSON.parse(msg);  
+      console.log(data);
+      SenddDataToClient("pong",ws.clientId);  
+    }catch (e){
+      console.log("Failed to parse");
+      console.log(msg);
+      return;
+    }
+    
+
+    // console.log("Got msg :::" + msg);
+    // if(msg.data == "ping"){
+      
+    // }else{
+    //   SenddDataToClient(msg,ws.clientId);  
+    // }
+    
   });
 
   ws.on('close', () => {

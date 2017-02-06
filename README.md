@@ -1,1 +1,2 @@
-# SMS Receiver online
+# WebsocketTTT
+Wbsocket project for Tac Tic Toe based on NodeJS
