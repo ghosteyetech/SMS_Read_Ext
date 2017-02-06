@@ -26,7 +26,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
     
     console.log("req :: "+ req.query.q);//extarct query paramters like this url====> http://localhost:3000/search?q=tobi+ferret
     
-    var msgContent = {sender:"me", msg: req.query.q};
+    var msgContent = {sender:req.query.no, msg: req.query.q};
 
   //console.log(req);
   //res.json(req.body);
