@@ -10,17 +10,17 @@ const path = require('path');
 // https://www.google.com/settings/security/lesssecureapps
 // https://accounts.google.com/b/0/displayunlockcaptcha
 
-// var nodemailer = require("nodemailer");
+var nodemailer = require("nodemailer");
+var smtpTransport = nodemailer.createTransport("SMTP",{
+   service: "Gmail",  // sets automatically host, port and connection security settings
+   auth: {
+       user: "sameerabuzzflow@gmail.com",
+       pass: "buzz.123"
+   }
+});
 
-// var smtpTransport = nodemailer.createTransport("SMTP",{
-//    service: "Gmail",  // sets automatically host, port and connection security settings
-//    auth: {
-//        user: "sameerabuzzflow@gmail.com",
-//        pass: "buzz.123"
-//    }
-// });
-
-var helper = require('sendgrid').mail;
+//Herku mail client needed credit card
+/*var helper = require('sendgrid').mail;
 var from_email = new helper.Email('test@example.com');
 var to_email = new helper.Email('sameerabuzzflow@gmail.com');
 var subject = 'Hello World from the SendGrid Node.js Library!';
@@ -33,6 +33,7 @@ var request = sg.emptyRequest({
   path: '/v3/mail/send',
   body: mail.toJSON(),
 });
+*/
 
 // var pg = require('pg');
 // pg.defaults.ssl = true;
@@ -93,27 +94,30 @@ function SenddDataToClient(msg, client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
             client.send(resData);
 
+            console.log("Sending email too...");
             //Sending email -start
-            /*smtpTransport.sendMail({  //email options
-               from: "Sender Name <email@gmail.com>", // sender address.  Must be the same as authenticated user if using GMail.
+            smtpTransport.sendMail({  //email options
+               from: "Sender Name <sameerabuzzflow@gmail.com>", // sender address.  Must be the same as authenticated user if using GMail.
                to: "Receiver Name <sameerabuzzflow@gmail.com>", // receiver
                subject: "Emailing with nodemailer", // subject
                text: "Email Example with nodemailer" // body
             }, function(error, response){  //callback
                if(error){
-                   console.log(error);
+                   console.log("Error:"+error);
                }else{
                    console.log("Message sent: " + response.message);
                }
                
                smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
-            });*/
+            });
 
-            sg.API(request, function(error, response) {
+            //Heroku mail client
+            /*sg.API(request, function(error, response) {
               console.log(response.statusCode);
               console.log(response.body);
               console.log(response.headers);
             });
+            */
 
             //Sending email -end
 
