@@ -13,6 +13,7 @@
   "dependencies": {
     "bufferutil": "1.2.1",
     "express": "4.13.4",
+    "nodemailer": "0.7.0",
     "utf-8-validate": "1.2.1",
     "ws": "1.1.0",
     "pg": "2.x"

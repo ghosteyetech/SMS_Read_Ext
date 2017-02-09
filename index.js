@@ -6,6 +6,19 @@ const express = require('express');
 const SocketServer = require('ws').Server;
 const path = require('path');
 
+//Enable followings of google account via browser
+// https://www.google.com/settings/security/lesssecureapps
+// https://accounts.google.com/b/0/displayunlockcaptcha
+
+var nodemailer = require("nodemailer");
+
+var smtpTransport = nodemailer.createTransport("SMTP",{
+   service: "Gmail",  // sets automatically host, port and connection security settings
+   auth: {
+       user: "sameerabuzzflow@gmail.com",
+       pass: "buzz.123"
+   }
+});
 
 // var pg = require('pg');
 // pg.defaults.ssl = true;
@@ -65,6 +78,25 @@ function SenddDataToClient(msg, client_ID){
           }else{
             var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
             client.send(resData);
+
+            //Sending email -start
+            smtpTransport.sendMail({  //email options
+               from: "Sender Name <email@gmail.com>", // sender address.  Must be the same as authenticated user if using GMail.
+               to: "Receiver Name <sameerabuzzflow@gmail.com>", // receiver
+               subject: "Emailing with nodemailer", // subject
+               text: "Email Example with nodemailer" // body
+            }, function(error, response){  //callback
+               if(error){
+                   console.log(error);
+               }else{
+                   console.log("Message sent: " + response.message);
+               }
+               
+               smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+            });
+
+            //Sending email -end
+
           }
           
           //var json = JSON.parse(msg);//JSON.parse is use only when deal with var str = '{"foo": "bar"}'; like string. 
