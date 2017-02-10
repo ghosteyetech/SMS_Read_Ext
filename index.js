@@ -167,7 +167,7 @@ wss.on('connection', (ws) => {
       if(data.type == "ping"){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId);    
-      }if(data.type == "auth"){
+      }else if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
         client_IDs.push(ws.clientId);
         console.log('Auth Client connected --- ID :'+ws.clientId);
