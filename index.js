@@ -160,7 +160,15 @@ wss.on('connection', (ws) => {
     try{
       var data = JSON.parse(msg);  
       console.log(data);
-      SenddDataToClient("pong",ws.clientId);  
+
+      if(data.type == "ping"){
+        SenddDataToClient("pong",ws.clientId);    
+      }else{
+        console.log(data.type);
+        SenddDataToClient("pong",ws.clientId);    
+      }
+
+      
     }catch (e){
       console.log("Failed to parse");
       console.log(msg);
