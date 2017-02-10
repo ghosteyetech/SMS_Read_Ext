@@ -165,7 +165,7 @@ wss.on('connection', (ws) => {
       var data = JSON.parse(msg);  
       
 
-      if(data.type == "ping"){
+      if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId);    
       }else if(data.type == "auth"){
