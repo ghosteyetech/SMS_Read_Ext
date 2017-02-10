@@ -74,10 +74,13 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       
     }else if(requestType == "newmsg"){
       console.log("New msg");
-      var msgContent = {sender:req.query.auth, msg: req.query.msg};  
+      var msgContent = {sender:req.query.no, msg: req.query.msg};  
+      var receiverId = req.query.auth;
 
-      console.log("Auth Data : "+ req.query.auth);
-      console.log("Message Data : "+ req.query.msg);
+      console.log("Auth Code : "+ req.query.auth);
+      console.log("User Email : "+ req.query.email);
+      console.log("Number : "+ req.query.no);
+      console.log("Message body : "+ req.query.msg);
 
       res.writeHead(200, {"Content-Type": "application/json"});
       
@@ -86,7 +89,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
         status: "sent"
       });
       res.end(json);
-      SenddDataToClient(msgContent, "all");
+      SenddDataToClient(msgContent, receiverId);
     }else{
       res.header('Content-type', 'text/html');
       res.end('<h1>Unauthorized request:'+req.query.q+'</h1>');  
@@ -112,14 +115,7 @@ const wss = new SocketServer({ server });
 
 //---------
 function SenddDataToClient(msg, client_ID){
-  var opponentPlayer = null;
-  switch (client_ID) {
-    case client_IDs[0]: opponentPlayer = client_IDs[1];
-      break;
-    case client_IDs[1]: opponentPlayer = client_IDs[0];
-      break;
-  }
-
+  
   wss.clients.forEach((client) => {
       console.log("Client ID ::"+client.clientId);
       try {
@@ -127,10 +123,15 @@ function SenddDataToClient(msg, client_ID){
           if(msg == "pong" && client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
             client.send(resData);  
-          }else{
+          }else if(msg == "auth" && client.clientId == client_ID){
+            var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
+            client.send(resData);  
+          }else if( client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
             client.send(resData);
 
+          }else{
+            console.log(msg);
           }
           
           //var json = JSON.parse(msg);//JSON.parse is use only when deal with var str = '{"foo": "bar"}'; like string. 
@@ -177,7 +178,7 @@ wss.on('connection', (ws) => {
         client_IDs.push(ws.clientId);
         console.log('Android Client or unauth client connected --- ID :'+ws.clientId);
         console.log(data.type);
-        SenddDataToClient(ata.type,ws.clientId);    
+        SenddDataToClient(data.type,ws.clientId);    
       }
 
       
