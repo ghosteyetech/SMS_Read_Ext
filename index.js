@@ -158,8 +158,9 @@ wss.on('connection', (ws) => {
   ws.on('message',(msg) =>{
 
     try{
+      console.log("WebsockertOnMsg: "+data);
       var data = JSON.parse(msg);  
-      console.log(data);
+      
 
       if(data.type == "ping"){
         SenddDataToClient("pong",ws.clientId);    
