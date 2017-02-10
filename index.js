@@ -64,8 +64,14 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
     }else if(requestType == "newmsg"){
       console.log("New msg");
       var msgContent = {sender:req.query.no, msg: req.query.msg};  
-      res.header('Content-type', 'text/html');
-      res.end('<h1>Hello, Secure World!'+req.query.q+'</h1>');  
+
+      res.writeHead(200, {"Content-Type": "application/json"});
+      
+      var json = JSON.stringify({ 
+        content: msgContent, 
+        status: "sent"
+      });
+      res.end(json);
       SenddDataToClient(msgContent, "all");
     }else{
       res.header('Content-type', 'text/html');
