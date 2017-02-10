@@ -166,11 +166,14 @@ wss.on('connection', (ws) => {
       }if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
         client_IDs.push(ws.clientId);
-        console.log('Client connected --- ID :'+ws.clientId);
+        console.log('Auth Client connected --- ID :'+ws.clientId);
         SenddDataToClient("auth",ws.clientId);    
       }else{
+        ws.clientId = getCode();
+        client_IDs.push(ws.clientId);
+        console.log('Android Client or unauth client connected --- ID :'+ws.clientId);
         console.log(data.type);
-        SenddDataToClient("pong",ws.clientId);    
+        SenddDataToClient(ata.type,ws.clientId);    
       }
 
       
