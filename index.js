@@ -70,6 +70,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       });
       res.end(json);
 
+      sendEmail(requestType, email, newId);
       
     }else if(requestType == "newmsg"){
       console.log("New msg");
@@ -126,33 +127,6 @@ function SenddDataToClient(msg, client_ID){
           }else{
             var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
             client.send(resData);
-
-            console.log("Sending email too...");
-            //Sending email -start
-            smtpTransport.sendMail({  //email options
-               from: "Sender Name <sameerabuzzflow@gmail.com>", // sender address.  Must be the same as authenticated user if using GMail.
-               to: "Receiver Name <sameerabuzzflow@gmail.com>", // receiver
-               subject: "Emailing with nodemailer", // subject
-               text: "Email Example with nodemailer" // body
-            }, function(error, response){  //callback
-               if(error){
-                   console.log("Error:"+error);
-               }else{
-                   console.log("Message sent: " + response.message);
-               }
-               
-               smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
-            });
-
-            //Heroku mail client
-            /*sg.API(request, function(error, response) {
-              console.log(response.statusCode);
-              console.log(response.body);
-              console.log(response.headers);
-            });
-            */
-
-            //Sending email -end
 
           }
           
@@ -230,4 +204,39 @@ wss.on('connection', (ws) => {
 function getCode(){
   var id = new Date().getTime();//Setting id for each client
   return id;
+}
+
+function sendEmail(equestType, email, values){
+
+  console.log("Sending email ...");
+
+  if(equestType == "getcode"){
+  
+    //Sending email -start
+    smtpTransport.sendMail({  //email options
+       from: "Sender Name <sameerabuzzflow@gmail.com>", // sender address.  Must be the same as authenticated user if using GMail.
+       to: "Receiver Name <"+email+">", // receiver
+       subject: "Read SMS online Support", // subject
+       text: "Your code "+ values// body
+    }, function(error, response){  //callback
+       if(error){
+           console.log("Error:"+error);
+       }else{
+           console.log("Message sent: " + response.message);
+       }
+       
+       smtpTransport.close(); // shut down the connection pool, no more messages.  Comment this line out to continue sending emails.
+    });
+
+    //Heroku mail client
+    /*sg.API(request, function(error, response) {
+      console.log(response.statusCode);
+      console.log(response.body);
+      console.log(response.headers);
+    });
+    */
+
+    //Sending email -end
+
+  }
 }
