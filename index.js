@@ -74,7 +74,10 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       
     }else if(requestType == "newmsg"){
       console.log("New msg");
-      var msgContent = {sender:req.query.no, msg: req.query.msg};  
+      var msgContent = {sender:req.query.auth, msg: req.query.msg};  
+
+      console.log("Auth Data : "+ req.query.auth);
+      console.log("Message Data : "+ req.query.msg);
 
       res.writeHead(200, {"Content-Type": "application/json"});
       
