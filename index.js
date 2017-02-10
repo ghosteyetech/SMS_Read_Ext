@@ -57,10 +57,20 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
     console.log("req :: "+ requestType);//extarct query paramters like this url====> http://localhost:3000/search?q=tobi+ferret
   
     if(requestType == "getcode"){
-      console.log("Request new code");
+      var email = req.query.para1;
+      console.log("Request new code :> Email : "+email);
       var newId = getCode();
-      res.header('Content-type', 'text/html');
-      res.end('<h1>Hello, Secure World!'+req.query.q+'</h1>');  
+
+      res.writeHead(201, {"Content-Type": "application/json"});
+      
+      var json = JSON.stringify({ 
+        request: requestType, 
+        code: newId,
+        email: email
+      });
+      res.end(json);
+
+      
     }else if(requestType == "newmsg"){
       console.log("New msg");
       var msgContent = {sender:req.query.no, msg: req.query.msg};  
