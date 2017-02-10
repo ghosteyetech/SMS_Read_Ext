@@ -36,16 +36,16 @@ var request = sg.emptyRequest({
 });
 */
 
-// var pg = require('pg');
-// pg.defaults.ssl = true;
-//
-// pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-//    client.query('SELECT * FROM onlineUsers', function(err, result) {
-//       done();
-//       if(err) return console.error(err);
-//       console.log(result.rows);
-//    });
-// });
+var pg = require('pg');
+pg.defaults.ssl = true;
+
+pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+   client.query('SELECT * FROM onlineUsers', function(err, result) {
+      done();
+      if(err) return console.error(err);
+      console.log(result.rows);
+   });
+});
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'indexx.html');
