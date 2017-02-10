@@ -124,7 +124,7 @@ function SenddDataToClient(msg, client_ID){
       console.log("Client ID ::"+client.clientId);
       try {
 
-          if(msg == "pong"){
+          if(msg == "pong" && client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
             client.send(resData);  
           }else{
