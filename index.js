@@ -153,10 +153,7 @@ function SenddDataToClient(msg, client_ID){
 }
 //---------
 wss.on('connection', (ws) => {
-  ws.clientId = getCode();
-  client_IDs.push(ws.clientId);
-
-  console.log('Client connected --- ID :'+ws.clientId);
+  
 
   ws.on('message',(msg) =>{
 
@@ -166,6 +163,11 @@ wss.on('connection', (ws) => {
 
       if(data.type == "ping"){
         SenddDataToClient("pong",ws.clientId);    
+      }if(data.type == "auth"){
+        ws.clientId = data.code;//getCode();
+        client_IDs.push(ws.clientId);
+        console.log('Client connected --- ID :'+ws.clientId);
+        SenddDataToClient("auth",ws.clientId);    
       }else{
         console.log(data.type);
         SenddDataToClient("pong",ws.clientId);    
