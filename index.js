@@ -157,12 +157,15 @@ wss.on('connection', (ws) => {
 
   ws.on('message',(msg) =>{
 
+    console.log("WebsockertOnMsg: "+msg);
+
     try{
-      console.log("WebsockertOnMsg: "+data);
+
       var data = JSON.parse(msg);  
       
 
       if(data.type == "ping"){
+        console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId);    
       }if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
