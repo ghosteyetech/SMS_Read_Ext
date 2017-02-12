@@ -44,7 +44,7 @@ pg.defaults.ssl = true;
 
 //Create table
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-   client.query('CREATE TABLE onlineUsers (id INT PRIMARY KEY NOT NULL, email TEXT NOT NULL), ', function(err, result) {
+   client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL), ', function(err, result) {
       done();
       if(err) return console.error(err);
       console.log(result.rows);
