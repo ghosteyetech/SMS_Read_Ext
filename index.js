@@ -41,8 +41,6 @@ pg.defaults.ssl = true;
 
 //console.log("Dtabase URL: "+process.env.DATABASE_URL);
 //Should enable posgresql from the dqashboad resources page
-ID INT PRIMARY KEY     NOT NULL,
-   NAME           TEXT    NOT NULL,
 
 //Create table
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
