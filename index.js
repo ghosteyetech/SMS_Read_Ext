@@ -43,6 +43,9 @@ pg.defaults.ssl = true;
 //Should enable posgresql from the dqashboad resources page
 //And install psql local machine the use following command to login
 //==> heroku pg:psql DATABASE_URL --app sms-reader-ghost-online
+//==To see logs via cmd
+//===> heroku logs --tail --ps postgres --app sms-reader-ghost-online
+
 //Create table
 /*pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL)', function(err, result) {
@@ -55,8 +58,13 @@ pg.defaults.ssl = true;
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('SELECT * FROM onlineUsers', function(err, result) {
       done();
-      if(err) return console.error(err);
-      console.log(result.rows);
+      if(err){
+        return console.error(err);
+      } else{
+        console.log("Results : ");
+        console.log(result.rows);  
+      }
+      
    });
 });
 
