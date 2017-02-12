@@ -39,7 +39,19 @@ var request = sg.emptyRequest({
 var pg = require('pg');
 pg.defaults.ssl = true;
 
-console.log("Dtabase URL: "+process.env.DATABASE_URL);
+//console.log("Dtabase URL: "+process.env.DATABASE_URL);
+//Should enable posgresql from the dqashboad resources page
+ID INT PRIMARY KEY     NOT NULL,
+   NAME           TEXT    NOT NULL,
+
+//Create table
+pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+   client.query('CREATE TABLE onlineUsers (id INT PRIMARY KEY NOT NULL, email TEXT NOT NULL), ', function(err, result) {
+      done();
+      if(err) return console.error(err);
+      console.log(result.rows);
+   });
+});
 
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('SELECT * FROM onlineUsers', function(err, result) {
