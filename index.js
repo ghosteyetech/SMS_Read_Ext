@@ -5,6 +5,7 @@ var client_IDs = [];//["1466584765725","1466584765726"];
 const express = require('express');
 const SocketServer = require('ws').Server;
 const path = require('path');
+var randomstring = require("randomstring");
 
 //Enable followings of google account via browser
 // https://www.google.com/settings/security/lesssecureapps
@@ -81,7 +82,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       var email = req.query.para1;
       
       var newId_extention = getCode();
-      var newId_android = getCode();
+      var newId_android = getCode()+getRandomString();
 
       console.log("Request new code :> Email : "+email+" newId_extention: "+newId_extention+" newId_android: "+newId_android);
 
@@ -284,4 +285,13 @@ function sendEmail(equestType, email, values){
     //Sending email -end
 
   }
+}
+
+function getRandomString(){
+  var randomStr = randomstring.generate({
+    length: 3,
+    charset: 'abcdefghijklmnopqrstuvwxyz'
+  });
+
+  return randomStr;
 }
