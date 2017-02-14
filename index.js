@@ -82,20 +82,21 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       var email = req.query.para1;
       
       var newId_extention = getCode();
-      var newId_android = getCode()+getRandomString();
+      var newId_android = getCode()+getRandomString(3);
+      var tokenAuth = randomstring.generate(7);//generate token with mixing numbers
 
-      console.log("Request new code :> Email : "+email+" newId_extention: "+newId_extention+" newId_android: "+newId_android);
+      console.log("Request new code :> Email : "+email+" newId_extention: "+newId_extention+" newId_android: "+newId_android+" Token: "+tokenAuth);
 
       res.writeHead(201, {"Content-Type": "application/json"});
       
       var json = JSON.stringify({ 
         request: requestType, 
-        code: newId_extention,
+        code: newId_extention+"@"+newId_android,
         email: email
       });
       res.end(json);
 
-      sendEmail(requestType, email, newId_extention);
+      sendEmail(requestType, email, tokenAuth);
       
     }else if(requestType == "newmsg"){
       console.log("New msg");
@@ -287,9 +288,9 @@ function sendEmail(equestType, email, values){
   }
 }
 
-function getRandomString(){
+function getRandomString(len){
   var randomStr = randomstring.generate({
-    length: 3,
+    length: len,
     charset: 'abcdefghijklmnopqrstuvwxyz'
   });
 
