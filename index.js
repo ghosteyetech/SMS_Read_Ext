@@ -48,13 +48,13 @@ pg.defaults.ssl = true;
 //===> heroku logs --tail --ps postgres --app sms-reader-ghost-online
 
 //Create table
-/*pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-   client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL)', function(err, result) {
+pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+   client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL, mobileid TEXT NOT NULL, extensionid TEXT NOT NULL, tokenauth TEXT NOT NULL)', function(err, result) {
       done();
       if(err) return console.error(err);
       console.log(result.rows);
    });
-});*/
+});
 
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('SELECT * FROM onlineUsers', function(err, result) {
