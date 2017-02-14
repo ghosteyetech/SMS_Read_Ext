@@ -79,14 +79,17 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
   
     if(requestType == "getcode"){
       var email = req.query.para1;
-      console.log("Request new code :> Email : "+email);
-      var newId = getCode();
+      
+      var newId_extention = getCode();
+      var newId_android = getCode();
+
+      console.log("Request new code :> Email : "+email+" newId_extention: "+newId_extention+" newId_android: "+newId_android);
 
       res.writeHead(201, {"Content-Type": "application/json"});
       
       var json = JSON.stringify({ 
         request: requestType, 
-        code: newId,
+        code: newId_extention,
         email: email
       });
       res.end(json);
