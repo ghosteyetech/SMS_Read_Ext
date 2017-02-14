@@ -94,7 +94,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       });
       res.end(json);
 
-      sendEmail(requestType, email, newId);
+      sendEmail(requestType, email, newId_extention);
       
     }else if(requestType == "newmsg"){
       console.log("New msg");
