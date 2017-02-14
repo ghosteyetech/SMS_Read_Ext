@@ -17,7 +17,8 @@
     "sendgrid": "^4.2.0",
     "utf-8-validate": "1.2.1",
     "ws": "1.1.0",
-    "pg": "2.x"
+    "pg": "2.x",
+    "randomstring" : "latest"
   },
 
   "repository": {
