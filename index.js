@@ -48,13 +48,13 @@ pg.defaults.ssl = true;
 //===> heroku logs --tail --ps postgres --app sms-reader-ghost-online
 
 //Drop table
-pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+/*pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('DROP TABLE onlineUsers', function(err, result) {
       done();
       if(err) return console.error(err);
       console.log(result.rows);
    });
-});
+});*/
 
 //Create table
 pg.connect(process.env.DATABASE_URL, function(err, client, done) {
