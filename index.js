@@ -57,7 +57,7 @@ pg.defaults.ssl = true;
 });*/
 
 //Create table
-pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+/*pg.connect(process.env.DATABASE_URL, function(err, client, done) {
    client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL, mobileid TEXT NOT NULL, extensionid TEXT NOT NULL, tokenauth TEXT NOT NULL)', function(err, result) {
       done();
       if(err) return console.error(err);
@@ -77,6 +77,7 @@ pg.connect(process.env.DATABASE_URL, function(err, client, done) {
       
    });
 });
+*/
 
 const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'indexx.html');
@@ -104,6 +105,8 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
         email: email
       });
       res.end(json);
+
+      insertUserDataToDatabase(newId_extention, email, newId_android, newId_extention, tokenAuth);
 
       sendEmail(requestType, email, tokenAuth);
       
@@ -304,4 +307,20 @@ function getRandomString(len){
   });
 
   return randomStr;
+}
+
+function insertUserDataToDatabase(id, email, mobile_id, extention_id, tokenAuth){
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+       client.query('INSERT INTO onlineUsers(id, email, mobileid, extensionid, tokenauth) VALUES ($1, $2, $3, $4, $5)',[id, email, mobile_id, extention_id, tokenAuth], 
+        function(err, result) {
+          done();
+          if(err){
+            return console.error(err);
+          } else{
+            console.log("Results : ");
+            console.log(result.rows);  
+          }
+          
+       });
+    });
 }
