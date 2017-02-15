@@ -210,7 +210,7 @@ wss.on('connection', (ws) => {
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId);    
       }else if(data.type == "newtoken"){
-        SenddDataToClient("newtoken",data.token);    
+        getUserAuthData("token",data.token);
       }else if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
         client_IDs.push(ws.clientId);
@@ -328,4 +328,24 @@ function insertUserDataToDatabase(id, email, mobile_id, extention_id, tokenAuth)
           
        });
     });
+}
+
+function getUserAuthData(para, value){
+
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+       client.query('SELECT * FROM onlineUsers where tokenauth=$1',[value], 
+        function(err, result) {
+          done();
+          if(err){
+            return console.error(err);
+          } else{
+            console.log("Results : ");
+            console.log(result.rows);  
+          }
+          
+       });
+    });
+
+  SenddDataToClient("newtoken",data.token);    
+
 }
