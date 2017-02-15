@@ -348,7 +348,7 @@ function getUserAuthData(para, value, clientId){
             console.log(result.rows);  
             var results = result.rows;
             
-            SenddDataToClient("newtoken", clientId, results[0].mobileid);    
+            SenddDataToClient("newtoken", clientId, results[0].extensionid+"@"+results[0].mobileid);    
           }
           
        });
