@@ -333,6 +333,9 @@ function insertUserDataToDatabase(id, email, mobile_id, extention_id, tokenAuth)
 
 function getUserAuthData(para, value){
 
+  console.log("Para : "+para+" Vlaue : "+value);
+
+
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
        client.query('SELECT * FROM onlineUsers where tokenauth=$1',[value], 
         function(err, result) {
