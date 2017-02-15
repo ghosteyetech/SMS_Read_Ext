@@ -58,7 +58,7 @@ pg.defaults.ssl = true;
 
 //Create table
 /*pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-   client.query('CREATE TABLE onlineUsers (id INTEGER PRIMARY KEY NOT NULL, email TEXT NOT NULL, mobileid TEXT NOT NULL, extensionid TEXT NOT NULL, tokenauth TEXT NOT NULL)', function(err, result) {
+   client.query('CREATE TABLE onlineUsers (id BIGINT PRIMARY KEY NOT NULL, email TEXT NOT NULL, mobileid TEXT NOT NULL, extensionid TEXT NOT NULL, tokenauth TEXT NOT NULL)', function(err, result) {
       done();
       if(err) return console.error(err);
       console.log(result.rows);
@@ -101,7 +101,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
       
       var json = JSON.stringify({ 
         request: requestType, 
-        code: newId_extention+"@"+newId_android,
+        code: newId_extention+"@"+newId_android+"@"+tokenAuth,
         email: email
       });
       res.end(json);
