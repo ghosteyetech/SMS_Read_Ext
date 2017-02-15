@@ -127,7 +127,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
         status: "sent"
       });
       res.end(json);
-      SenddDataToClient(msgContent, receiverId);
+      SenddDataToClient(msgContent, receiverId, "");
     }else{
       res.header('Content-type', 'text/html');
       res.end('<h1>Unauthorized request:'+req.query.q+'</h1>');  
@@ -152,7 +152,7 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
 const wss = new SocketServer({ server });
 
 //---------
-function SenddDataToClient(msg, client_ID){
+function SenddDataToClient(msg, client_ID, data){
   
   wss.clients.forEach((client) => {
       console.log("Client ID ::"+client.clientId);
@@ -161,8 +161,8 @@ function SenddDataToClient(msg, client_ID){
           if(msg == "pong" && client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
             client.send(resData);  
-          }else if(msg == "newtoken"){
-            var resData = JSON.stringify({"newtoken" : "ok", "mobileid": client_ID});
+          }else if(msg == "newtoken" && client.clientId == client_ID){
+            var resData = JSON.stringify({"newtoken" : "ok", "mobileid": data});
             client.send(resData);
           }else if(msg == "auth" && client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
@@ -208,21 +208,21 @@ wss.on('connection', (ws) => {
 
       if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
-        SenddDataToClient("pong",ws.clientId);    
-      }else if(data.type == "newtoken"){
+        SenddDataToClient("pong",ws.clientId, "");    
+      }else if(data.type == "newtoken" && ws.clientId != undefined){
         console.log("Token "+data.token);
-        getUserAuthData("token",data.token);
+        getUserAuthData("token",data.token, ws.clientId);
       }else if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
         client_IDs.push(ws.clientId);
         console.log('Auth Client connected --- ID :'+ws.clientId);
-        SenddDataToClient("auth",ws.clientId);    
+        SenddDataToClient("auth",ws.clientId, "");    
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
         console.log('Android Client or unauth client connected --- ID :'+ws.clientId);
         console.log(data.type);
-        SenddDataToClient(data.type,ws.clientId);    
+        SenddDataToClient(data.type,ws.clientId, "");    
       }
 
       
@@ -331,7 +331,7 @@ function insertUserDataToDatabase(id, email, mobile_id, extention_id, tokenAuth)
     });
 }
 
-function getUserAuthData(para, value){
+function getUserAuthData(para, value, clientId){
 
   console.log("Para : "+para+" Vlaue : "+value);
 
@@ -341,15 +341,17 @@ function getUserAuthData(para, value){
         function(err, result) {
           done();
           if(err){
+            SenddDataToClient("newtoken", clientId, "error");    
             return console.error(err);
           } else{
             console.log("Results : ");
-            console.log(result.rows);  
+            console.log(result.rows.mobileid);  
+            SenddDataToClient("newtoken", clientId, result.rows.mobileid);    
           }
           
        });
     });
 
-  SenddDataToClient("newtoken",data.token);    
+  
 
 }
