@@ -210,6 +210,7 @@ wss.on('connection', (ws) => {
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId);    
       }else if(data.type == "newtoken"){
+        console.log("Token "+data.token);
         getUserAuthData("token",data.token);
       }else if(data.type == "auth"){
         ws.clientId = data.code;//getCode();
