@@ -162,7 +162,7 @@ function SenddDataToClient(msg, client_ID, data){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
             client.send(resData);  
           }else if(msg == "newtoken" && client.clientId == client_ID){
-            var resData = JSON.stringify({"newtoken" : "ok", "mobileid": data});
+            var resData = JSON.stringify({"Message": "newtoken", "mobileid": data});
             client.send(resData);
           }else if(msg == "auth" && client.clientId == client_ID){
             var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
