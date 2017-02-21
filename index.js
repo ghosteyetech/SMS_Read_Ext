@@ -161,7 +161,7 @@ function SenddDataToClient(type, client_ID, dataObj){
           if(client.clientId == client_ID){
 
             if(type == "new"){
-              var resData = JSON.stringify({"id" : client_ID+"", "status": dataObj.status});
+              var resData = JSON.stringify({ "type" :"new" ,"id" : client_ID+"", "status": dataObj.status });
               client.send(resData); 
             }
 
