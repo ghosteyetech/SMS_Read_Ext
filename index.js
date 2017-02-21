@@ -223,6 +223,11 @@ wss.on('connection', (ws) => {
         console.log("New Extension : "+ws.clientId);
         var resObj = {status : "temp"};
         SenddDataToClient("new", ws.clientId, resObj);    
+      }else if(data.type == "new" && data.code == "android"){
+        ws.clientId = getCode();
+        console.log("New Android Client : "+ws.clientId);
+        var resObj = {status : "temp"};
+        SenddDataToClient("new", ws.clientId, resObj);    
       }else if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId, "");    
