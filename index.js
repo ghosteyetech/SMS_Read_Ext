@@ -231,6 +231,12 @@ wss.on('connection', (ws) => {
       }else if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId, "");    
+      }else{
+        ws.clientId = getCode();
+        client_IDs.push(ws.clientId);
+        console.log('Android Client or unauth client connected --- ID :'+ws.clientId);
+        console.log(data.type);
+        SenddDataToClient(data.type,ws.clientId, "");    
       }      
 
       /*if(data.type == "ping" && ws.clientId != undefined){
