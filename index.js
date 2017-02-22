@@ -235,8 +235,8 @@ wss.on('connection', (ws) => {
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
         console.log('Android Client or unauth client connected --- ID :'+ws.clientId);
-        console.log(data.type);
-        SenddDataToClient(data.type,ws.clientId, "");    
+        var resObj = {status : "temp"};
+        SenddDataToClient("new",ws.clientId, resObj);    
       }      
 
       /*if(data.type == "ping" && ws.clientId != undefined){
