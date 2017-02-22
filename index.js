@@ -276,14 +276,8 @@ wss.on('connection', (ws) => {
   });
 
   ws.on('close', () => {
-      console.log('Client disconnected');
-      var index = client_IDs.indexOf(ws.clientId);
-      if (index > -1) {
-        client_IDs.splice(index, 1);
-        console.log('Client ID successfully removed');
-      }else{
-        console.log('Client ID remove faild');
-      }
+      console.log('Client disconnected : '+ws.clientId);
+      
   });
 
 });
