@@ -414,14 +414,14 @@ function VerifyUserAuthData(para, clientId, useremail, mobileid, extensionid){
         function(err, result) {
           done();
           if(err){
-            //SenddDataToClient(para, clientId, {status: "error"});    
+            SenddDataToClient(para, clientId, {status: "error"});    
             return console.error(err);
           } else{
             console.log("Results : ");
             console.log(result.rows);  
             var results = result.rows;
             
-            //SenddDataToClient(para, clientId, {status: "found", mobileid: results[0].mobileid });    
+            SenddDataToClient(para, clientId, {status: "found", mobileid: results[0].mobileid });    
           }
           
        });
