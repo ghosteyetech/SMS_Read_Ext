@@ -191,6 +191,17 @@ function SenddDataToClient(type, client_ID, dataObj){
 
               client.send(resData);
               
+            }else if(type == "authVerifyExtension" && client.clientId == client_ID){
+              var resData = null;
+              if(dataObj.status == "found"){
+                console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.extensionid);
+                client.clientId = dataObj.extensionid;
+                resData = JSON.stringify({ "type": type ,"id" : client.clientId+"", "status": "ok"});
+              }else{
+                resData = JSON.stringify({ "type": type ,"id" : client_ID+"", "status": "error"});
+              }
+              
+              client.send(resData);  
             } 
 
 
@@ -265,6 +276,16 @@ wss.on('connection', (ws) => {
         console.log("==>authVerifyAndroid<<= MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
         
         VerifyUserAuthData("authVerifyAndroid", ws.clientId, data.useremail, data.mobileid, data.extensionid);
+
+      }else if(data.type == "authVerifyExtension" && data.extensionid != undefined){
+
+        if(ws.clientId == undefined){
+          ws.clientId = getCode();
+        }
+
+        console.log("==>authVerifyExtension<<= MobileID : "+data.mobileid+" ExtID: "+data.extensionid);
+        
+        VerifyUserAuthData("authVerifyAndroid", ws.clientId, null , data.mobileid, data.extensionid);
 
       }else if(data.type == "newtoken" && ws.clientId != undefined){
         console.log("Token "+data.token);
@@ -425,8 +446,29 @@ function VerifyUserAuthData(para, clientId, useremail, mobileid, extensionid){
 
   console.log("Para : "+para+" clientId"+clientId+" useremail"+useremail+" mobileid"+mobileid+" extensionid"+extensionid);
 
+  if(useremail == null){
 
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+      pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+       client.query('SELECT * FROM onlineUsers WHERE mobileid=$1 AND extensionid=$2',[mobileid, extensionid], 
+        function(err, result) {
+          done();
+          if(err){
+            SenddDataToClient(para, clientId, {status: "error"});    
+            return console.error(err);
+          } else{
+            console.log("Results : ");
+            console.log(result.rows);  
+            var results = result.rows;
+            
+            SenddDataToClient(para, clientId, {status: "found", extensionid: results[0].extensionid });    
+          }
+          
+       });
+    });
+
+  }else{
+
+    pg.connect(process.env.DATABASE_URL, function(err, client, done) {
        client.query('SELECT * FROM onlineUsers WHERE email=$1 AND mobileid=$2 AND extensionid=$3',[useremail, mobileid, extensionid], 
         function(err, result) {
           done();
@@ -443,5 +485,9 @@ function VerifyUserAuthData(para, clientId, useremail, mobileid, extensionid){
           
        });
     });
+
+  }
+
+  
 
 }
