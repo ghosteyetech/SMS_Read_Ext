@@ -209,6 +209,7 @@ function SenddDataToClient(type, client_ID, dataObj){
               client.send(resData);  
 
             }else if(type == "newmsg" ){
+              console.log("=======>New SMS<======");
               var resData = JSON.stringify({"Sender": dataObj.sender, "Message": dataObj.msg});
               client.send(resData);  
             } 
