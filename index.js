@@ -290,7 +290,7 @@ wss.on('connection', (ws) => {
 
         console.log("==>authVerifyExtension<<= MobileID : "+data.mobileid+" ExtID: "+data.extensionid);
         
-        VerifyUserAuthData("authVerifyAndroid", ws.clientId, null , data.mobileid, data.extensionid);
+        VerifyUserAuthData("authVerifyExtension", ws.clientId, null , data.mobileid, data.extensionid);
 
       }else if(data.type == "newtoken" && ws.clientId != undefined){
         console.log("Token "+data.token);
