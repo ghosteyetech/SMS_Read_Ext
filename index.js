@@ -167,6 +167,7 @@ function SenddDataToClient(type, client_ID, dataObj){
               var resData = JSON.stringify({ "type": "pong" ,"id" : client_ID+""});
               client.send(resData);  
             }else if(type == "authVerifyAndroid" && client.clientId == client_ID){
+
               var resData = null;
               if(dataObj.status == "found"){
                 console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.mobileid);
@@ -177,7 +178,9 @@ function SenddDataToClient(type, client_ID, dataObj){
               }
               
               client.send(resData);  
+
             }else if(type == "newtoken" && client.clientId == client_ID){
+
               var resData = null;
               if(dataObj.status == "ok"){
                 
@@ -192,6 +195,7 @@ function SenddDataToClient(type, client_ID, dataObj){
               client.send(resData);
               
             }else if(type == "authVerifyExtension" && client.clientId == client_ID){
+
               var resData = null;
               if(dataObj.status == "found"){
                 console.log("Type: "+type+" Client ID change from : "+client.clientId+" to "+dataObj);
@@ -202,6 +206,7 @@ function SenddDataToClient(type, client_ID, dataObj){
               }
               
               client.send(resData);  
+              
             } 
 
 
