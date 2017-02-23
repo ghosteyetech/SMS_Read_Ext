@@ -224,7 +224,7 @@ function SenddDataToClient(type, client_ID, dataObj){
           }*/
 
       } catch (e) {
-          console.log('This doesn\'t look like a valid JSON: ', dataObj);
+          console.log('This doesn\'t look like a valid JSON: ', e);
           return;
       }
 
