@@ -171,7 +171,7 @@ function SenddDataToClient(type, client_ID, dataObj){
               if(dataObj.status == "found"){
                 console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.mobileid);
                 client.clientId = dataObj.mobileid;
-                resData = JSON.stringify({ "type": type ,"id" : client_ID+"", "status": "ok"});
+                resData = JSON.stringify({ "type": type ,"id" : client.clientId+"", "status": "ok"});
               }else{
                 resData = JSON.stringify({ "type": type ,"id" : client_ID+"", "status": "error"});
               }
