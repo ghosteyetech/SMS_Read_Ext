@@ -183,7 +183,7 @@ function SenddDataToClient(type, client_ID, dataObj){
                 
                 console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.extensionid);
                 client.clientId = dataObj.extensionid;
-                resData = JSON.stringify({"type": "newtoken", "status": "ok", "mobileid": data.mobileid, "extensionid": dataObj.extensionid});
+                resData = JSON.stringify({"type": "newtoken", "status": "ok", "mobileid": data.mobileid+"", "extensionid": dataObj.extensionid+""});
                 
               }else{
                 resData = JSON.stringify({"type": "newtoken", "status": "error"});
