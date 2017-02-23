@@ -231,6 +231,10 @@ wss.on('connection', (ws) => {
       }else if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId, "");    
+      }else if(data.type == "authVerifyAndroid" && data.mobileid != undefined){
+        console.log("MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
+        console.log("Client ID chnage from : "+ws.clientId+" to "+data.mobileid);
+        ws.clientId = data.mobileid;    
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
