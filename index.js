@@ -406,7 +406,7 @@ function getUserAuthData(para, value, clientId){
 
 function VerifyUserAuthData(para, clientId, useremail, mobileid, extensionid){
 
-  console.log("Para : "+para+" Vlaue : "+value);
+  console.log("Para : "+para+" clientId"+clientId+" useremail"+useremail+" mobileid"+mobileid+" extensionid"+extensionid);
 
 
   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
