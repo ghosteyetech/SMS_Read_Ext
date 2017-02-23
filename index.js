@@ -210,7 +210,8 @@ function SenddDataToClient(type, client_ID, dataObj){
 
             }else if(type == "newmsg" ){
               console.log("=======>New SMS<======");
-              var resData = JSON.stringify({"Sender": dataObj.sender, "Message": dataObj.msg});
+              var resData = JSON.stringify({"type": type, "Sender": dataObj.sender, "Message": dataObj.msg});
+              console.log(resData);
               client.send(resData);  
             } 
 
