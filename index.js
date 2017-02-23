@@ -247,8 +247,8 @@ wss.on('connection', (ws) => {
         if(ws.clientId == undefined){
           ws.clientId = getCode();
         }
-        
-        console.log("MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
+
+        console.log("==>authVerifyAndroid<<= MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
         
         VerifyUserAuthData("authVerifyAndroid", ws.clientId, data.useremail, data.mobileid, data.extensionid);
 
@@ -414,14 +414,14 @@ function VerifyUserAuthData(para, clientId, useremail, mobileid, extensionid){
         function(err, result) {
           done();
           if(err){
-            SenddDataToClient(para, clientId, {status: "error"});    
+            //SenddDataToClient(para, clientId, {status: "error"});    
             return console.error(err);
           } else{
             console.log("Results : ");
             console.log(result.rows);  
             var results = result.rows;
             
-            SenddDataToClient(para, clientId, {status: "found", mobileid: results[0].mobileid });    
+            //SenddDataToClient(para, clientId, {status: "found", mobileid: results[0].mobileid });    
           }
           
        });
