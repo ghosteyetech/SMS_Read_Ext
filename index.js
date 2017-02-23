@@ -177,6 +177,20 @@ function SenddDataToClient(type, client_ID, dataObj){
               }
               
               client.send(resData);  
+            }else if(type == "newtoken" && client.clientId == client_ID){
+              var resData = null;
+              if(dataObj.status == "ok"){
+                
+                console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.extensionid);
+                client.clientId = dataObj.extensionid;
+                resData = JSON.stringify({"type": "newtoken", "status": "ok", "mobileid": data.mobileid, "extensionid": dataObj.extensionid});
+                
+              }else{
+                resData = JSON.stringify({"type": "newtoken", "status": "error"});
+              }
+
+              client.send(resData);
+              
             } 
 
 
@@ -252,6 +266,9 @@ wss.on('connection', (ws) => {
         
         VerifyUserAuthData("authVerifyAndroid", ws.clientId, data.useremail, data.mobileid, data.extensionid);
 
+      }else if(data.type == "newtoken" && ws.clientId != undefined){
+        console.log("Token "+data.token);
+        getUserAuthData("token",data.token, ws.clientId);
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
@@ -389,14 +406,14 @@ function getUserAuthData(para, value, clientId){
         function(err, result) {
           done();
           if(err){
-            SenddDataToClient("newtoken", clientId, "error");    
+            SenddDataToClient("newtoken", clientId, {status: "error"});    
             return console.error(err);
           } else{
             console.log("Results : ");
             console.log(result.rows);  
             var results = result.rows;
             
-            SenddDataToClient("newtoken", clientId, results[0].extensionid+"@"+results[0].mobileid);    
+            SenddDataToClient("newtoken", clientId, { status:"ok", extensionid: results[0].extensionid, mobileid: results[0].mobileid});    
           }
           
        });
