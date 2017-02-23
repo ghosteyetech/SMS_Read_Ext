@@ -169,6 +169,7 @@ function SenddDataToClient(type, client_ID, dataObj){
             }else if(type == "authVerifyAndroid" && client.clientId == client_ID){
               var resData = null;
               if(dataObj.status == "found"){
+                console.log("Client ID chnage from : "+client.clientId+" to "+dataObj.mobileid);
                 client.clientId = dataObj.mobileid;
                 resData = JSON.stringify({ "type": type ,"id" : client_ID+"", "status": "ok"});
               }else{
@@ -241,11 +242,14 @@ wss.on('connection', (ws) => {
       }else if(data.type == "ping" && ws.clientId != undefined){
         console.log("Sending pong to Client : "+ws.clientId);
         SenddDataToClient("pong",ws.clientId, "");    
-      }else if(data.type == "authVerifyAndroid" && data.mobileid != undefined && ws.clientId != undefined){
-        console.log("MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
-        console.log("Client ID chnage from : "+ws.clientId+" to "+data.mobileid);
-          
+      }else if(data.type == "authVerifyAndroid" && data.mobileid != undefined){
 
+        if(ws.clientId == undefined){
+          ws.clientId = getCode();
+        }
+        
+        console.log("MobileID : "+data.mobileid+" ExtID: "+data.extensionid+" UEmail: "+data.useremail+" Token: "+data.token);
+        
         VerifyUserAuthData("authVerifyAndroid", ws.clientId, data.useremail, data.mobileid, data.extensionid);
 
       }else{
