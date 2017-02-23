@@ -198,15 +198,15 @@ function SenddDataToClient(type, client_ID, dataObj){
 
               var resData = null;
               if(dataObj.status == "found"){
-                console.log("Type: "+type+" Client ID change from : "+client.clientId+" to "+dataObj);
-                //client.clientId = dataObj.extensionid;
+                console.log("Type: "+type+" Client ID change from : "+client.clientId+" to "+dataObj.extensionid);
+                client.clientId = dataObj.extensionid;
                 resData = JSON.stringify({ "type": type ,"id" : client.clientId+"", "status": "ok"});
               }else{
                 resData = JSON.stringify({ "type": type ,"id" : client_ID+"", "status": "error"});
               }
               
               client.send(resData);  
-              
+
             } 
 
 
