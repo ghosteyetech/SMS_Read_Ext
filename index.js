@@ -127,7 +127,8 @@ const server = express() //tutorial: http://expressjs.com/en/api.html#req.query
         status: "sent"
       });
       res.end(json);
-      SenddDataToClient(msgContent, receiverId, "");
+
+      SenddDataToClient("newmsg", receiverId, msgContent);
     }else{
       res.header('Content-type', 'text/html');
       res.end('<h1>Unauthorized request:'+req.query.q+'</h1>');  
@@ -207,37 +208,17 @@ function SenddDataToClient(type, client_ID, dataObj){
               
               client.send(resData);  
 
+            }else if(type == "newmsg" ){
+              var resData = JSON.stringify({"Sender": dataObj.sender, "Message": dataObj.msg});
+              client.send(resData);  
             } 
 
 
           }
 
-          /*if(msg == "pong" && client.clientId == client_ID){
-            var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
-            client.send(resData);  
-          }else if(msg == "newtoken" && client.clientId == client_ID){
-            var resData = JSON.stringify({"Message": "newtoken", "mobileid": data});
-            client.send(resData);
-          }else if(msg == "auth" && client.clientId == client_ID){
-            var resData = JSON.stringify({"YourID" : client_ID+"", "Message": msg});
-            client.send(resData);  
-          }else if( client.clientId == client_ID){
-            var resData = JSON.stringify({"YourID" : client_ID+"", "Sender": msg.sender, "Message": msg.msg});
-            client.send(resData);
-
-          }else{
-            console.log(msg);
-          }*/
-          
           //var json = JSON.parse(msg);//JSON.parse is use only when deal with var str = '{"foo": "bar"}'; like string. 
                                       //If you have object like var chunk={id:"12",data:"123556",details:{"name":"alan","age":"12"}}; no need to parse
-          //console.log("Message :");
-          //console.log(json.data);
-
-          /*if(json.data == 'ping'){
-            var resData = JSON.stringify({"YourID" : client_ID+"", "Box": msg});
-            client.send(resData);
-          }*/
+          
 
       } catch (e) {
           console.log('This doesn\'t look like a valid JSON: ', e);
