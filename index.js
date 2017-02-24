@@ -278,6 +278,8 @@ wss.on('connection', (ws) => {
       }else if(data.type == "newtoken" && ws.clientId != undefined){
         console.log("Token "+data.token);
         getUserAuthData("token",data.token, ws.clientId);
+      }else if(data.type == "newmsg" && ws.clientId != undefined){
+        console.log("========>NEW SMS ON WEBSOCKeT>>>>");
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
