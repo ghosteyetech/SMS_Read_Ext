@@ -156,10 +156,11 @@ const wss = new SocketServer({ server });
 function SenddDataToClient(type, client_ID, dataObj){
   
   wss.clients.forEach((client) => {
-      console.log("Client ID ::"+client.clientId+" Type: "+type);
+      
       try {
 
           if(client.clientId == client_ID){
+            console.log("Client ID ::"+client_ID+" Type: "+type);
 
             if(type == "new"){
               var resData = JSON.stringify({ "type" :"new" ,"id" : client_ID+"", "status": dataObj.status });
