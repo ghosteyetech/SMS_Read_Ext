@@ -214,7 +214,11 @@ function SenddDataToClient(type, client_ID, dataObj){
               var resData = JSON.stringify({"type": type, "Sender": dataObj.sender, "Message": dataObj.msg});
               console.log(resData);
               client.send(resData);  
-            } 
+            }else if(type == "smsrply") {
+              var resData = JSON.stringify({"type": type, "receiverno": dataObj.receiverno, "rplymessage": dataObj.rplymessage});
+              console.log(resData);
+              client.send(resData);
+            }
 
 
           }
@@ -292,6 +296,9 @@ wss.on('connection', (ws) => {
         var rplyMsg = data.rplymsg;
 
         console.log("MobileId: "+mobileid+" Receiver No: "+receiverNo+" Reply Msg: "+rplyMsg);
+        var resObj = { rplymessage : rplyMsg , receiverno : receiverNo };
+        SenddDataToClient("smsrply", mobileid, resObj);    
+
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
