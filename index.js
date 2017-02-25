@@ -286,6 +286,12 @@ wss.on('connection', (ws) => {
         console.log("To extensionid: "+extensionid);
         console.log("Message obj: "+resObj);
         SenddDataToClient("newmsg", extensionid, resObj);
+      }else if(data.type == "smsrply" && ws.clientId != undefined){
+        var mobileid = data.mobileid;
+        var receiverNo = data.receiverno;
+        var rplyMsg = data.rplymsg;
+
+        console.log("MobileId: "+mobileid+" Receiver No: "+receiverNo+" Reply Msg: "+rplyMsg);
       }else{
         ws.clientId = getCode();
         client_IDs.push(ws.clientId);
